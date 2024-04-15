@@ -18,8 +18,9 @@ LIBPRNT = $(addprefix $(PRNT_DIR), libftprintf.a)
 INCS = -Iinc/pipex.h
 #INCS_BONUS = -Iinc/pipex_bonus.h 
 
-SRC = 
-
+SRC = main.c \
+		validation.c \
+		pipex.c
 
 #SRC_BONUS = 
 

@@ -1,26 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hiono <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/13 16:43:35 by hiono             #+#    #+#             */
-/*   Updated: 2024/04/15 17:37:58 by hiono            ###   ########.fr       */
+/*   Created: 2024/04/15 16:03:39 by hiono             #+#    #+#             */
+/*   Updated: 2024/04/15 17:38:40 by hiono            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
+#include "../inc/pipex.h"
 
-# include <stdlib.h>
-# include <unistd.h>
-# include <fcntl.h>
-# include <sys/wait.h>
-# include "../libft/libft.h"
-# include "../ft_printf/ft_printf.h"
+int	main(int argc, char **argv, char **envp)
+{
+	int	f_in;
+	int	f_out;
 
-int		is_valid_args(int argc, char **argv);
-void	pipex(int fi, int fo, char **argv, char **envp);
-
-#endif
+	if (!is_valid_args(argc, argv))
+		return (1);
+	f_in = open(argv[1], O_RDONLY);
+	f_out = open(argv[4], O_CREAT | O_RDWR | O_TRUNC); //TODO:know options
+	if (f_in < 0 || f_out < 0)
+	{
+		ft_printf("Fail to open file\n");
+		return (1);
+	}
+	pipex(f_in, f_out, argv, envp);
+	return (0);
+}
