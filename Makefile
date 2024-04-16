@@ -15,12 +15,12 @@ LIBS = -L$(LFT_DIR) -lft -L$(PRNT_DIR) -lftprintf
 LIBFT = $(addprefix $(LFT_DIR), libft.a)
 LIBPRNT = $(addprefix $(PRNT_DIR), libftprintf.a)
 
-INCS = -Iinc/pipex.h
-#INCS_BONUS = -Iinc/pipex_bonus.h 
+INCS = -Iinc/
 
 SRC = main.c \
 		validation.c \
-		pipex.c
+		pipex.c \
+		utils.c
 
 #SRC_BONUS = 
 
@@ -51,7 +51,7 @@ $(LIBPRNT):
 #
 #$(OBJ_BONUS_DIR)%.o:$(SRC_BONUS_DIR)%.c
 #	mkdir -p $(OBJ_BONUS_DIR)
-#	$(CC) $(CFLAGS) $(INCS_BONUS) -c $< -o $@
+#	$(CC) $(CFLAGS) $(INCS) -c $< -o $@
 
 clean:
 	make -C $(LFT_DIR) clean

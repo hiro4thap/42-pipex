@@ -6,7 +6,7 @@
 /*   By: hiono <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 16:06:00 by hiono             #+#    #+#             */
-/*   Updated: 2024/04/15 18:04:14 by hiono            ###   ########.fr       */
+/*   Updated: 2024/04/16 17:50:12 by hiono            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,11 @@ int	is_args_four(int argc)
 
 int	is_valid_args(int argc, char **argv)
 {
+	(void) argv;
 	if (!is_args_four(argc))
 		return (0);
 	if (access(argv[1], R_OK))
 	{
-		ft_printf("File \"%s\" is not readable\n", argv[1]);
 		return (0);
 	}
 	//TODO:argv[2], argv[3] can include option.
@@ -46,7 +46,6 @@ int	is_valid_args(int argc, char **argv)
 	//}
 	if (!access(argv[4], F_OK) && access(argv[4], W_OK))
 	{
-		ft_printf("file \"%s\" is not writbale\n", argv[4]);
 		return (0);
 	}
 	return (1);
