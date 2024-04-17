@@ -6,7 +6,7 @@
 /*   By: hiono <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:07:38 by hiono             #+#    #+#             */
-/*   Updated: 2024/04/17 17:07:44 by hiono            ###   ########.fr       */
+/*   Updated: 2024/04/17 18:16:22 by hiono            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,13 +108,13 @@ void	pipex(char **argv, char **envp)
 
 	if (pipe(pipefd) == -1)
 	{
-		ft_printf("Pipe error\n");
+		perror("Pipe error\n");
 		exit(EXIT_FAILURE);
 	}
 	pid = fork();
 	if (pid == -1)
 	{
-		ft_printf("Fork error\n");
+		perror("Fork error\n");
 		exit(EXIT_FAILURE);
 	}
 	if (pid == 0)

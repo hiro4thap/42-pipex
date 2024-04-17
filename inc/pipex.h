@@ -6,7 +6,7 @@
 /*   By: hiono <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 16:43:35 by hiono             #+#    #+#             */
-/*   Updated: 2024/04/17 15:25:16 by hiono            ###   ########.fr       */
+/*   Updated: 2024/04/17 18:17:50 by hiono            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <sys/wait.h>
+# include <stdio.h>
 # include "../libft/libft.h"
 # include "../ft_printf/ft_printf.h"
 
