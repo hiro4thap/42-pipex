@@ -11,7 +11,7 @@ SRC_DIR = src/
 NAME = pipex
 NAME_BONUS = pipex_bonus
 
-LIBS = -L$(LFT_DIR) -lft -L$(PRNT_DIR) -lftprintf
+LIBS = -L$(PRNT_DIR) -lftprintf -L$(LFT_DIR) -lft
 LIBFT = $(addprefix $(LFT_DIR), libft.a)
 LIBPRNT = $(addprefix $(PRNT_DIR), libftprintf.a)
 
@@ -20,7 +20,8 @@ INCS = -Iinc/
 SRC = main.c \
 		validation.c \
 		pipex.c \
-		utils.c
+		utils.c \
+		command.c
 
 #SRC_BONUS = 
 
@@ -32,7 +33,7 @@ OBJ = $(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRCS))
 all:$(NAME)
 
 $(NAME):$(OBJ) $(LIBFT) $(LIBPRNT)
-	$(CC) $(OBJ) $(CFLAGS) $(INCS) $(LIBS) $(FWORKS) -o $@ 
+	$(CC) $(OBJ) $(CFLAGS) $(INCS) $(LIBS) -o $@ 
 
 $(OBJ_DIR)%.o:$(SRC_DIR)%.c
 	mkdir -p $(OBJ_DIR)
@@ -64,4 +65,8 @@ fclean:clean
 
 re:fclean all
 
-.PHONY: all clean fclean re bonus
+#TODO:delete before submission
+debug: $(SRCS)
+	$(CC) $(SRCS) $(CFLAGS) $(INCS) $(LIBS) -g -o debug
+
+.PHONY: all clean fclean re bonus debug
