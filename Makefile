@@ -4,9 +4,9 @@ CFLAGS = -Wall -Wextra -Werror
 LFT_DIR = libft/
 PRNT_DIR = ft_printf/
 OBJ_DIR = obj/
-#OBJ_BONUS_DIR = obj_bonus/
+OBJ_BONUS_DIR = obj_bonus/
 SRC_DIR = src/
-#SRC_BONUS_DIR = src_bonus/
+SRC_BONUS_DIR = src_bonus/
 
 NAME = pipex
 NAME_BONUS = pipex_bonus
@@ -23,12 +23,16 @@ SRC = main.c \
 		utils.c \
 		command.c
 
-#SRC_BONUS = 
+SRC_BONUS = main_bonus.c \
+		validation_bonus.c \
+		pipex_bonus.c \
+		utils_bonus.c \
+		command_bonus.c
 
 SRCS = $(addprefix $(SRC_DIR), $(SRC))
-#SRCS_BONUS = $(addprefix $(SRC_BONUS_DIR), $(SRC_BONUS))
+SRCS_BONUS = $(addprefix $(SRC_BONUS_DIR), $(SRC_BONUS))
 OBJ = $(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRCS))
-#OBJ_BONUS = $(patsubst $(SRC_BONUS_DIR)%.c,$(OBJ_BONUS_DIR)%.o,$(SRCS_BONUS))
+OBJ_BONUS = $(patsubst $(SRC_BONUS_DIR)%.c,$(OBJ_BONUS_DIR)%.o,$(SRCS_BONUS))
 
 all:$(NAME)
 
@@ -45,14 +49,14 @@ $(LIBFT):
 $(LIBPRNT):
 	make -C $(PRNT_DIR)
 
-#bonus:$(NAME_BONUS)
-#
-#$(NAME_BONUS):$(OBJ_BONUS) $(LIBFT) $(LIBPRNT)
-#	$(CC) $(OBJ_BONUS) $(CFLAGS) $(INCS_BONUS) $(LIBS) -o $@ 
-#
-#$(OBJ_BONUS_DIR)%.o:$(SRC_BONUS_DIR)%.c
-#	mkdir -p $(OBJ_BONUS_DIR)
-#	$(CC) $(CFLAGS) $(INCS) -c $< -o $@
+bonus:$(NAME_BONUS)
+
+$(NAME_BONUS):$(OBJ_BONUS) $(LIBFT) $(LIBPRNT)
+	$(CC) $(OBJ_BONUS) $(CFLAGS) $(INCS) $(LIBS) -o $@ 
+
+$(OBJ_BONUS_DIR)%.o:$(SRC_BONUS_DIR)%.c
+	mkdir -p $(OBJ_BONUS_DIR)
+	$(CC) $(CFLAGS) $(INCS) -c $< -o $@
 
 clean:
 	make -C $(LFT_DIR) clean
@@ -69,4 +73,9 @@ re:fclean all
 debug: $(SRCS)
 	$(CC) $(SRCS) $(CFLAGS) $(INCS) $(LIBS) -g -o debug
 
-.PHONY: all clean fclean re bonus debug
+#TODO:delete before submission
+debug_bonus: $(SRCS_BONUS)
+	$(CC) $(SRCS_BONUS) $(CFLAGS) $(INCS) $(LIBS) -g -o debug
+
+#TODO:delete before submission
+.PHONY: all clean fclean re bonus debug debug_bonus
