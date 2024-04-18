@@ -6,7 +6,7 @@
 /*   By: hiono <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 18:01:05 by hiono             #+#    #+#             */
-/*   Updated: 2024/04/17 18:18:49 by hiono            ###   ########.fr       */
+/*   Updated: 2024/04/18 12:12:36 by hiono            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	**get_evnp_path(char **envp);
 char	*ft_strdirjoin(char	*s1, char *s2);
 char	**split_cmd(char *cmd);
 int		is_args_greater_four(int argc);
-void	pipex(char **argv, char **envp);
+void	pipex(char **argv, char **envp, int pipefd_p[2], int argc);
 void	printerr(char *msg, char *fail);
 void	free_strs(char **strs);
 
