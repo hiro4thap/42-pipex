@@ -9,7 +9,6 @@ SRC_DIR = src/
 SRC_BONUS_DIR = src_bonus/
 
 NAME = pipex
-NAME_BONUS = pipex_bonus
 
 LIBS = -L$(PRNT_DIR) -lftprintf -L$(LFT_DIR) -lft
 LIBFT = $(addprefix $(LFT_DIR), libft.a)
@@ -27,7 +26,10 @@ SRC_BONUS = main_bonus.c \
 		validation_bonus.c \
 		pipex_bonus.c \
 		utils_bonus.c \
-		command_bonus.c
+		command_bonus.c \
+		pipex_hd_bonus.c \
+		get_next_line.c \
+		get_next_line_utils.c
 
 SRCS = $(addprefix $(SRC_DIR), $(SRC))
 SRCS_BONUS = $(addprefix $(SRC_BONUS_DIR), $(SRC_BONUS))
@@ -49,10 +51,8 @@ $(LIBFT):
 $(LIBPRNT):
 	make -C $(PRNT_DIR)
 
-bonus:$(NAME_BONUS)
-
-$(NAME_BONUS):$(OBJ_BONUS) $(LIBFT) $(LIBPRNT)
-	$(CC) $(OBJ_BONUS) $(CFLAGS) $(INCS) $(LIBS) -o $@ 
+bonus:$(OBJ_BONUS) $(LIBFT) $(LIBPRNT)
+	$(CC) $(OBJ_BONUS) $(CFLAGS) $(INCS) $(LIBS) -o ${NAME}
 
 $(OBJ_BONUS_DIR)%.o:$(SRC_BONUS_DIR)%.c
 	mkdir -p $(OBJ_BONUS_DIR)
@@ -69,13 +69,4 @@ fclean:clean
 
 re:fclean all
 
-#TODO:delete before submission
-debug: $(SRCS)
-	$(CC) $(SRCS) $(CFLAGS) $(INCS) $(LIBS) -g -o debug
-
-#TODO:delete before submission
-debug_bonus: $(SRCS_BONUS)
-	$(CC) $(SRCS_BONUS) $(CFLAGS) $(INCS) $(LIBS) -g -o debug
-
-#TODO:delete before submission
-.PHONY: all clean fclean re bonus debug debug_bonus
+.PHONY: all clean fclean re bonus
