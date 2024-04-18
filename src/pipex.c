@@ -6,7 +6,7 @@
 /*   By: hiono <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:07:38 by hiono             #+#    #+#             */
-/*   Updated: 2024/04/17 18:16:22 by hiono            ###   ########.fr       */
+/*   Updated: 2024/04/18 12:00:25 by hiono            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,10 @@ void	child_dup_fds(int pipefd[2], char **argv)
 	dup2(fi, STDIN_FILENO);
 	close(fi);
 	dup2(pipefd[1], STDOUT_FILENO);
+	close(pipefd[1]);
 }
 
-void	child_exe_cmd(int pipefd[2], char **argv, char **envp)
+void	child_exe_cmd(char **argv, char **envp)
 {
 	char	**args;
 	char	**dirs;
@@ -52,7 +53,6 @@ void	child_exe_cmd(int pipefd[2], char **argv, char **envp)
 		free(cmd);
 		i++;
 	}
-	close(pipefd[1]);
 	printerr("command not found: %s\n", args[0]);
 	free_strs(args);
 	free_strs(dirs);
@@ -75,9 +75,10 @@ void	parent_dup_fds(int pipefd[2], char **argv)
 	dup2(fo, STDOUT_FILENO);
 	close(fo);
 	dup2(pipefd[0], STDIN_FILENO);
+	close(pipefd[0]);
 }
 
-void	parent_exe_cmd(int pipefd[2], char **argv, char **envp)
+void	parent_exe_cmd(char **argv, char **envp)
 {
 	char	**args;
 	char	**dirs;
@@ -94,7 +95,6 @@ void	parent_exe_cmd(int pipefd[2], char **argv, char **envp)
 		free(cmd);
 		i++;
 	}
-	close(pipefd[0]);
 	printerr("command not found: %s\n", args[0]);
 	free_strs(args);
 	free_strs(dirs);
@@ -120,11 +120,11 @@ void	pipex(char **argv, char **envp)
 	if (pid == 0)
 	{
 		child_dup_fds(pipefd, argv);
-		child_exe_cmd(pipefd, argv, envp);
+		child_exe_cmd(argv, envp);
 	}
 	else if (0 < pid)
 	{
 		parent_dup_fds(pipefd, argv);
-		parent_exe_cmd(pipefd, argv, envp);
+		parent_exe_cmd(argv, envp);
 	}
 }
