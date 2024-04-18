@@ -6,7 +6,7 @@
 /*   By: hiono <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 16:06:00 by hiono             #+#    #+#             */
-/*   Updated: 2024/04/17 15:02:49 by hiono            ###   ########.fr       */
+/*   Updated: 2024/04/18 17:41:08 by hiono            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,6 @@
 int	is_args_four(int argc)
 {
 	if (argc != 5)
-	{
-		ft_printf("Please give 4 arguments to the program\n");
 		return (0);
-	}
 	return (1);
 }

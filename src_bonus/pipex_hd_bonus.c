@@ -1,65 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_bonus.c                                      :+:      :+:    :+:   */
+/*   pipex_hd_bonus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hiono <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/17 18:00:01 by hiono             #+#    #+#             */
-/*   Updated: 2024/04/18 18:36:28 by hiono            ###   ########.fr       */
+/*   Created: 2024/04/18 15:31:51 by hiono             #+#    #+#             */
+/*   Updated: 2024/04/18 18:35:15 by hiono            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/pipex_bonus.h"
 
-void	child_dup_fds(int pipefd[2], char *in)
+void	child_dup_fds_hd(int pipefd[2], char *limiter)
 {
-	int		fi;
+	int		limlen;
+	char	*line;
+	char	*input;
 
-	if (access(in, F_OK))
+	input = NULL;
+	while (1)
 	{
-		printerr("no such file or directory: %s\n", in);
-		exit(EXIT_FAILURE);
+		line = get_next_line(STDIN_FILENO);
+		limlen = ft_strlen(limiter);
+		if (!ft_strncmp(line, limiter, limlen) && line[limlen] == '\n')
+			break ;
+		if (!input)
+			input = ft_strdup(line);
+		else
+			input = ft_strjoin(input, line);
+		free(line);
 	}
-	else if (access(in, R_OK))
-	{
-		printerr("permission denied: %s\n", in);
-		exit(EXIT_FAILURE);
-	}
-	fi = open(in, O_RDONLY);
-	if (fi < 0)
-		exit(EXIT_FAILURE);
-	close(pipefd[0]);
-	dup2(fi, STDIN_FILENO);
-	close(fi);
-	dup2(pipefd[1], STDOUT_FILENO);
+	free(line);
+	write(pipefd[1], input, ft_strlen(input));
 	close(pipefd[1]);
 }
 
-void	child_exe_cmd(char **argv, char **envp)
-{
-	char	**args;
-	char	**dirs;
-	int		i;
-	char	*cmd;
-
-	args = split_cmd(argv[2]);
-	dirs = get_evnp_path(envp);
-	i = 0;
-	while (dirs[i])
-	{
-		cmd = ft_strdirjoin(dirs[i], args[0]);
-		execve(cmd, args, envp);
-		free(cmd);
-		i++;
-	}
-	printerr("command not found: %s\n", args[0]);
-	free_strs(args);
-	free_strs(dirs);
-	exit(EXIT_COMMAND_NOT_FOUND);
-}
-
-void	parent_dup_fds(int pipefd_p[2], int pipefd_c[2], char *out)
+void	parent_dup_fds_hd(int pipefd_p[2], int pipefd_c[2], char *out)
 {
 	int		fo;
 
@@ -71,7 +48,7 @@ void	parent_dup_fds(int pipefd_p[2], int pipefd_c[2], char *out)
 	close(pipefd_c[1]);
 	if (out)
 	{
-		fo = open(out, O_CREAT | O_RDWR | O_TRUNC, 0644);
+		fo = open(out, O_CREAT | O_WRONLY | O_APPEND, 0644);
 		if (fo < 0)
 			exit(EXIT_FAILURE);
 		dup2(fo, STDOUT_FILENO);
@@ -86,7 +63,7 @@ void	parent_dup_fds(int pipefd_p[2], int pipefd_c[2], char *out)
 	close(pipefd_c[0]);
 }
 
-void	parent_exe_cmd(char *cmds, char **envp)
+void	parent_exe_cmd_hd(char *cmds, char **envp)
 {
 	char	**args;
 	char	**dirs;
@@ -109,7 +86,7 @@ void	parent_exe_cmd(char *cmds, char **envp)
 	exit(EXIT_COMMAND_NOT_FOUND);
 }
 
-void	pipex(char **argv, char **envp, int pipefd_p[2], int argc)
+void	pipex_hd(char **argv, char **envp, int pipefd_p[2], int argc)
 {
 	int	pipefd_c[2];
 	int	pid;
@@ -120,18 +97,15 @@ void	pipex(char **argv, char **envp, int pipefd_p[2], int argc)
 	if (pid == -1)
 		exit_forkerr();
 	if (pid == 0 && argc > 5)
-		pipex(argv, envp, pipefd_c, --argc);
+		pipex_hd(argv, envp, pipefd_c, --argc);
 	else if (pid == 0 && argc == 5)
-	{
-		child_dup_fds(pipefd_c, argv[1]);
-		child_exe_cmd(argv, envp);
-	}
+		child_dup_fds_hd(pipefd_c, argv[2]);
 	else if (0 < pid)
 	{
 		if (!pipefd_p)
-			parent_dup_fds(pipefd_p, pipefd_c, argv[argc - 1]);
+			parent_dup_fds_hd(pipefd_p, pipefd_c, argv[argc - 1]);
 		else
-			parent_dup_fds(pipefd_p, pipefd_c, NULL);
-		parent_exe_cmd(argv[argc - 2], envp);
+			parent_dup_fds_hd(pipefd_p, pipefd_c, NULL);
+		parent_exe_cmd_hd(argv[argc - 2], envp);
 	}
 }

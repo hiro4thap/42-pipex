@@ -6,7 +6,7 @@
 /*   By: hiono <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:07:38 by hiono             #+#    #+#             */
-/*   Updated: 2024/04/18 12:00:25 by hiono            ###   ########.fr       */
+/*   Updated: 2024/04/18 18:35:56 by hiono            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	parent_dup_fds(int pipefd[2], char **argv)
 		printerr("permission denied: %s\n", argv[4]);
 		exit(EXIT_FAILURE);
 	}
-	fo = open(argv[4], O_CREAT | O_RDWR | O_TRUNC, 0644);
+	fo = open(argv[4], O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fo < 0)
 		exit(EXIT_FAILURE);
 	close(pipefd[1]);
@@ -107,16 +107,10 @@ void	pipex(char **argv, char **envp)
 	int	pid;
 
 	if (pipe(pipefd) == -1)
-	{
-		perror("Pipe error\n");
-		exit(EXIT_FAILURE);
-	}
+		exit_pipeerr();
 	pid = fork();
 	if (pid == -1)
-	{
-		perror("Fork error\n");
-		exit(EXIT_FAILURE);
-	}
+		exit_forkerr();
 	if (pid == 0)
 	{
 		child_dup_fds(pipefd, argv);

@@ -6,11 +6,23 @@
 /*   By: hiono <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 17:50:26 by hiono             #+#    #+#             */
-/*   Updated: 2024/04/17 17:11:53 by hiono            ###   ########.fr       */
+/*   Updated: 2024/04/18 18:34:49 by hiono            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/pipex.h"
+
+void	exit_pipeerr(void)
+{
+	perror("Pipe error\n");
+	exit(EXIT_FAILURE);
+}
+
+void	exit_forkerr(void)
+{
+	perror("Fork error\n");
+	exit(EXIT_FAILURE);
+}
 
 void	free_strs(char **strs)
 {

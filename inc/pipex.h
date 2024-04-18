@@ -6,7 +6,7 @@
 /*   By: hiono <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 16:43:35 by hiono             #+#    #+#             */
-/*   Updated: 2024/04/17 18:17:50 by hiono            ###   ########.fr       */
+/*   Updated: 2024/04/18 18:34:20 by hiono            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,7 @@ int		is_args_four(int argc);
 void	pipex(char **argv, char **envp);
 void	printerr(char *msg, char *fail);
 void	free_strs(char **strs);
+void	exit_pipeerr(void);
+void	exit_forkerr(void);
 
 #endif
